@@ -14,10 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements JWTSubject
 {
 	use SoftDeletes;
-
     use Notifiable;
-
-	use HasRoles;
+    use HasRoles;
+    
 	// 这里使用api而不是web，是因为用了tymon/jwt-auth
 	protected $guard_name = 'api';
 
