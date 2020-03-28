@@ -25,7 +25,7 @@ Login -
 		&nbsp;
 	</i-col>
 	<i-col span="6">
-<div  class="outer-wrap">
+
 		<Card style="width:350px">
 			<p slot="title" style="text-align:center">
 				{{$SITE_TITLE}}
@@ -35,23 +35,17 @@ Login -
 			<p>
 				<i-form ref="formInline" :model="formInline" :rules="ruleInline" @submit.native.prevent>
 					<Form-item prop="username">
-						<i-input ref="ref_username" prefix="ios-contact-outline" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户名" size="large">
-							<!-- <Icon type="ios-person-outline" slot="prepend"></Icon> -->
-						</i-input>
+						<i-input ref="ref_username" prefix="ios-contact-outline" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户名" size="large"></i-input>
 					</Form-item>
-				
+
 					<Form-item prop="password">
-						<i-input ref="ref_password" prefix="ios-lock-outline" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码" size="large">
-							<!-- <Icon type="ios-lock-outline" slot="prepend"></Icon> -->
-						</i-input>
+						<i-input ref="ref_password" prefix="ios-lock-outline" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码" size="large"></i-input>
 					</Form-item>
 
 					<i-row>
 						<i-col span="16">
 							<Form-item prop="captcha">
-								<i-input ref="ref_captcha" prefix="ios-key-outline" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" size="large">
-									<!-- <Icon type="ios-key-outline" slot="prepend"></Icon> -->
-								</i-input>
+								<i-input ref="ref_captcha" prefix="ios-key-outline" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" size="large"></i-input>
 							</Form-item>
 						</i-col>
 						<i-col span="8">
@@ -79,7 +73,7 @@ Login -
 					
 					<br><br><br>
 					<Form-item>
-					<i-button :disabled="disabled_login_submit" :loading="loading_submit" type="primary" @click="handleSubmit('formInline')" long size="large">登  录</i-button>
+					<i-button :disabled="disabled_login_submit" :loading="loading_submit" type="primary" @click="handleSubmit('formInline')" long size="large">登 录</i-button>
 					<!-- <br>
 					<i-button :disabled="disabled_login_reset" @click="handleReset('formInline')" long size="large">重  置</i-button> -->
 					</Form-item>
@@ -90,8 +84,9 @@ Login -
 
 			</p>
 		</Card>
-</div>
+
 	</i-col>
+
 	<i-col span="9">
 		&nbsp;
 	</i-col>
@@ -147,18 +142,15 @@ var vm_app = new Vue({
 					var _this = this;
 
 					_this.logindisabled(true);
-					// _this.formInline.loginmessage = '<div class="text-info">正在验证...</div>';
 					_this.$Message.loading('正在验证...');
 
 					if (_this.formInline.username == undefined || _this.formInline.password == undefined || _this.formInline.captcha == undefined ||
 						_this.formInline.username == '' || _this.formInline.password == '' || _this.formInline.captcha == '') {
-						// _this.formInline.loginmessage = '<div class="text-warning">内容未填写完整！</div>';
 						_this.$Message.warning('内容未填写完整！');
 						_this.logindisabled(false);
 						return false;
 					}
 					
-
 					var url = "{{ route('login.checklogin') }}";
 					axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 					axios.post(url, {
@@ -168,22 +160,9 @@ var vm_app = new Vue({
 						rememberme: _this.formInline.rememberme
 					})
 					.then(function (response) {
-						// console.log(response.data);
-						// return false;
 						
 						if (response.data) {
-
-							if (response.data=='nosingleuser') {
-								// _this.formInline.loginmessage = '<font color="red">用户已在其他地方登录！ 请注销后重试！</font>';
-								_this.$Message.warning('用户已在其他地方登录！ 请注销后重试！');
-								_this.logindisabled(false);
-								return false;
-							}
-
-
-
 							_this.formInline.password = '**********';
-							// _this.formInline.loginmessage = '<font color="blue">登录成功！ 正在跳转...</font>';
 							_this.$Message.success('登录成功！ 正在跳转...');
 							window.setTimeout(function(){
 								_this.loginreset;
@@ -192,47 +171,41 @@ var vm_app = new Vue({
 								_this.formInline.loginmessage = '';
 							}, 1500);
 						} else {
-							// _this.formInline.loginmessage = '<font color="red">验证码错误或登录失败！</font>';
 							_this.$Message.warning('验证码错误或登录失败！');
 							_this.logindisabled(false);
 						}
 					})
 					.catch(function (error) {
-						// console.log(error);
-						// _this.formInline.loginmessage = '<font color="red">用户过期或未知错误！</font>';
-						_this.$Message.error('用户过期或未知错误！');
+						_this.$Message.error('用户状态过期或其他未知错误！');
 						_this.logindisabled(false);
 					})
 					_this.captchaclick();
-				} else {
-					// this.$Message.error('Fail!');
 				}
 			})
 		},
-		handleReset (name) {
+		handleReset(name) {
 			this.$refs[name].resetFields();
 		},
-		captchaclick: function(){
+		captchaclick() {
 			this.$refs.captcha.src+=Math.random().toString().substr(-1);
 		},
-		logindisabled: function (value) {
-			var _this = this;
+		logindisabled(value) {
 			if (value) {
-				_this.$refs.ref_username.disabled = true;
-				_this.$refs.ref_password.disabled = true;
-				_this.$refs.ref_captcha.disabled = true;
-				_this.$refs.ref_rememberme.disabled = true;
-				_this.disabled_login_submit = true;
-				_this.disabled_login_reset = true;
-				_this.loading_submit = true;
+				this.$refs.ref_username.disabled = true;
+				this.$refs.ref_password.disabled = true;
+				this.$refs.ref_captcha.disabled = true;
+				this.$refs.ref_rememberme.disabled = true;
+				this.disabled_login_submit = true;
+				this.disabled_login_reset = true;
+				this.loading_submit = true;
 			} else {
-				_this.$refs.ref_username.disabled = false;
-				_this.$refs.ref_password.disabled = false;
-				_this.$refs.ref_captcha.disabled = false;
-				_this.$refs.ref_rememberme.disabled = false;
-				_this.disabled_login_submit = false;
-				_this.disabled_login_reset = false;
-				_this.loading_submit = false;
+				this.$refs.ref_username.disabled = false;
+				this.$refs.ref_password.disabled = false;
+				this.$refs.ref_captcha.disabled = false;
+				this.$refs.ref_rememberme.disabled = false;
+				this.disabled_login_submit = false;
+				this.disabled_login_reset = false;
+				this.loading_submit = false;
 			}
 		},
 	}
