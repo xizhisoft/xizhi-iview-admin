@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // 自定义追加
+        Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
     /*
@@ -226,6 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // 自定义追加
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ],
 
 ];

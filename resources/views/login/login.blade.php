@@ -25,7 +25,7 @@ Login -
 		&nbsp;
 	</i-col>
 	<i-col span="6">
-
+<div  class="outer-wrap">
 		<Card style="width:350px">
 			<p slot="title" style="text-align:center">
 				{{$SITE_TITLE}}
@@ -55,7 +55,7 @@ Login -
 							</Form-item>
 						</i-col>
 						<i-col span="8">
-							&nbsp;<img ref="captcha" src="{{captcha_src('flatxz')}}" @click="captchaclick" style="cursor:pointer;vertical-align:top;">
+							&nbsp;<img ref="captcha" src="{{captcha_src('flat4xizhi')}}" @click="captchaclick" style="cursor:pointer;vertical-align:top;">
 						</i-col>
 					</i-row>
 					
@@ -90,7 +90,7 @@ Login -
 
 			</p>
 		</Card>
-
+</div>
 	</i-col>
 	<i-col span="9">
 		&nbsp;
@@ -187,8 +187,7 @@ var vm_app = new Vue({
 							_this.$Message.success('登录成功！ 正在跳转...');
 							window.setTimeout(function(){
 								_this.loginreset;
-								// var url = "{{ route('portal') }}";
-								var url = "{{ route('renshi.jiaban.applicant') }}";
+								var url = "{{ route('portal') }}";
 								window.location.href = url;
 								_this.formInline.loginmessage = '';
 							}, 1500);

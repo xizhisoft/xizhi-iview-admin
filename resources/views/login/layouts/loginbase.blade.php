@@ -70,6 +70,26 @@
     bottom: 0px;
     margin: auto;
 }
+
+*{margin: 0;padding: 0}
+html,body{height: 100%}     /*这里很关键*/
+.outer-wrap{
+	/*只有同时为html和body设置height: 100%时，这里的height才生效，
+	并且随浏览器窗口变化始终保持和浏览器视窗等高*/
+	height: 100%;    
+	position: relative;
+	background-color: rgba(0, 0, 0, .5);
+}
+.login-panel{
+	width: 100%;
+	height: 100%;
+	background-color: orange;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -150px;
+	margin-left: -200px;
+}
 </style>
 @yield('my_style')
 <script src="{{ asset('js/functions.js') }}"></script>
@@ -79,13 +99,13 @@
 <script>
 isMobile = mobile();
 if (isMobile) {
-	// alert('系统暂不支持移动端！');
-	// document.execCommand("Stop");
-    // window.stop();
+	alert('系统暂不支持移动端！');
+	document.execCommand("Stop");
+    window.stop();
     
     // window.setTimeout(function(){
-        var url = "{{route('logincube')}}";
-        window.location.href = url;
+        // var url = "{{route('login')}}";
+        // window.location.href = url;
     // }, 1000);
 }
 </script>
