@@ -9,8 +9,6 @@ use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use Cookie;
 use DB;
-use App\Models\Main\Smt_config;
-use App\Models\Main\Release;
 
 class mainController extends Controller
 {
