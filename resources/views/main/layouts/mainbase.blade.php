@@ -94,7 +94,7 @@
 					
 						<Submenu name="1">
 							<template slot="title">
-								<Icon type="ios-person"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
+								<Icon type="ios-person" size="20"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
 							</template>
 							<Menu-Item name="1-1"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
