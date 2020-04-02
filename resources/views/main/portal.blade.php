@@ -34,7 +34,7 @@ Main(Portal) -
 					生产管理模块（2020版）
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
-						<a href="{{ route('smt.config') }}" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;Config</a>
+						<a href="#" target="_blank">配置</a>
 					</span>
 					@endcan
 				</p>
