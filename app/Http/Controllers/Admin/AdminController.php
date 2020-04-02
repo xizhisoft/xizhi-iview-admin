@@ -50,6 +50,24 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function systemIndex()
+    {
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+
+        // 获取配置值
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		
+		$share = compact('config', 'user');
+		return view('admin.system', $share);
+    }
+	
+    /**
+     * 列出配置页面
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function configIndex()
     {
 		// 获取JSON格式的jwt-auth用户响应
@@ -64,18 +82,55 @@ class AdminController extends Controller
         // return view('admin.config', $config);
 		
 		$share = compact('config', 'user');
-        return view('admin.config', $share);
+		return view('admin.config', $share);
     }
 
+
     /**
-     * 列出配置页面 ajax
+     * 获取系统信息
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function systemList(Request $request)
+    {
+		if (! $request->ajax()) return null;
+		
+		// 获取系统信息
+		$systeminfo = array(
+			'os'=>PHP_OS,
+			'operating_environment'=>$_SERVER["SERVER_SOFTWARE"],
+			'php_sapi_name'=>php_sapi_name(),
+			// 'thinkphp_version'=>THINK_VERSION.' [ <a href="http://thinkphp.cn" target="_blank">查看最新版本</a> ]',
+			'upload_max_filesize'=>ini_get('upload_max_filesize'),
+			'max_execution_time'=>ini_get('max_execution_time').'秒',
+			'server_date'=>date("Y年n月j日 H:i:s"),
+			'beijing_time'=>gmdate("Y年n月j日 H:i:s",time()+8*3600),
+			'server_name'=>$_SERVER['SERVER_NAME'].' [ '.gethostbyname($_SERVER['SERVER_NAME']).' ]',
+			'server_addr'=>$_SERVER["SERVER_ADDR"],
+			'http_host'=>$_SERVER['HTTP_HOST'],
+			'document_root'=>$_SERVER['DOCUMENT_ROOT'],
+			'disk_free_space'=>round((disk_free_space(".")/(1024*1024)),2).'M',
+			'register_globals'=>get_cfg_var("register_globals")=='1' ? 'ON' : 'OFF',
+			'magic_quotes_gpc'=>(1===get_magic_quotes_gpc()) ? 'YES' : 'NO',
+			'magic_quotes_runtime'=>(1===get_magic_quotes_runtime()) ? 'YES' : 'NO',
+			'http_user_agent'=>$_SERVER["HTTP_USER_AGENT"],
+			// 'boottime'=> exec('uptime'),
+		);
+	// dd(exec('uptime'));
+		return $systeminfo;
+		}
+		
+
+    /**
+     * 获取配置信息
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function configList(Request $request)
     {
-		if (! $request->ajax()) { return null; }
+		if (! $request->ajax()) return null;
 		
         // 获取用户信息
 		// $perPage = $request->input('perPage');
@@ -83,6 +138,7 @@ class AdminController extends Controller
 		// if (null == $page) $page = 1;
 
 		$config = Config::select('cfg_id', 'cfg_name', 'cfg_value', 'cfg_description')
+			->orderBy('cfg_id', 'asc')
 			->get();
 		
 		foreach ($config as $key=>$value) {
@@ -90,7 +146,7 @@ class AdminController extends Controller
 				unset($config[$key]);
 			}
 		}
-			
+		
 		return $config;
     }
 
@@ -102,7 +158,7 @@ class AdminController extends Controller
      */
     public function configChange(Request $request)
     {
-		if (! $request->isMethod('post') || ! $request->ajax()) { return false; }
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 		// $up2data = $request->all();
 		$up2data = $request->only('cfg_data');
@@ -114,7 +170,6 @@ class AdminController extends Controller
 		}
 		return $result;
     }
-
 
 	
     /**
@@ -161,5 +216,6 @@ class AdminController extends Controller
 
 		return $result;
     }
+	
 
 }

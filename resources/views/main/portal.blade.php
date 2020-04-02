@@ -116,7 +116,7 @@ var vm_app = new Vue({
 		CardList_Admin: [
 			{
 				name: '后台管理入口',
-				url: "{{ route('login') }}",
+				url: "{{ route('admin.system.index') }}",
 				percent: 99,
 			},
 		],

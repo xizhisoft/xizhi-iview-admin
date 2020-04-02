@@ -19,7 +19,7 @@ Admin(System) -
 
 	<i-row>
 		<i-col span="12">
-            <Card style="width:420px">
+            <Card style="width:480px">
                 <p slot="title">
                     <Icon type="ios-cog-outline"></Icon>
                     系统环境信息
@@ -123,7 +123,7 @@ Admin(System) -
         </i-col>
 
 		<i-col span="12">
-			<Card style="width:420px">
+			<Card style="width:480px">
                 <p slot="title">
 					<Icon type="ios-laptop"></Icon>
                     当前客户端
